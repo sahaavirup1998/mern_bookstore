@@ -146,6 +146,38 @@ const Shop = () => {
             )}
           </div>
         </div>
+        {/* pagination */}
+        <div className="flexCenter mt-14 mb-10 gap-4">
+          <button
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+            className={`btn-secondary !py-1 !px-3 ${
+              currentPage === 1 && "opacity-50 cursor-not-allowed"
+            }`}
+          >
+            Prev
+          </button>
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index + 1}
+              onClick={() => setCurrentPage(index + 1)}
+              className={`btn-light !py-1 !px-3 ${
+                currentPage === index + 1 && "!bg-secondaryOne"
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+            className={`btn-secondary !py-1 !px-3 ${
+              currentPage === totalPages && "opacity-50 cursor-not-allowed"
+            }`}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </section>
   );
