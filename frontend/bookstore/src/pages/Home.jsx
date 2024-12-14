@@ -14,9 +14,6 @@ const Home = () => {
       <About />
       <PopularBooks />
       <Feature />
-      <div className="max-padd-container bg-white">
-        <Footer />
-      </div>
     </>
   )
 }
