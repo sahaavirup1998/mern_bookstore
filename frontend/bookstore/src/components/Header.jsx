@@ -76,7 +76,7 @@ const Header = () => {
             </span>
           </Link>
           <div className="relative group">
-            <div onClick={!token && navigate("/")} className="">
+            <div className="">
               {token ? (
                 <div>
                   <TbUserCircle className="text-[29px] cursor-pointer" />

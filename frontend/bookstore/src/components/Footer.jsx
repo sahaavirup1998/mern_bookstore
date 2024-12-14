@@ -6,7 +6,7 @@ import { FOOTER_CONTACT_INFO, FOOTER_LINKS, SOCIALS } from '../assets/data'
 const Footer = () => {
   return (
     <footer className='mb-4 max-padd-container'>
-      <div className='rounded-tr-3xl rounded-tl-3xl pt-12 xl:pt-20 pb-8'>
+      <div className='rounded-tr-3xl rounded-tl-3xl pt-12 xl:pt-5 pb-8'>
         <h3 className='h3'>Discover books that ignite your imagination</h3>
         <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magni, ducimus iste?</p>
         <hr className='my-8 bg-slate-900/30 h-[2px]' />
