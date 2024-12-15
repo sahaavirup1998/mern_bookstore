@@ -82,7 +82,7 @@ const Header = () => {
                   <TbUserCircle className="text-[29px] cursor-pointer" />
                 </div>
               ) : (
-                <button className="btn-outline flexCenter gap-x-2">
+                <button onClick={() => navigate("/login")} className="btn-outline flexCenter gap-x-2">
                   Login <RiUserLine />
                 </button>
               )}

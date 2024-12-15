@@ -1,51 +1,81 @@
-import React, {createContext, useEffect, useState} from 'react';
-import { useNavigate } from  "react-router-dom";
-import {books} from "../assets/data";
+import React, { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { books } from "../assets/data";
 
 export const ShopContext = createContext();
 
 const ShopContextProvider = (props) => {
-    const currency = '$';
-    const navigate = useNavigate();
-    const [token, setToken] = useState("");
-    const [cartItems, setCartItems] = useState({});
+  const currency = "$";
+  const delivery_charges = 15;
+  const navigate = useNavigate();
+  const [token, setToken] = useState("");
+  const [cartItems, setCartItems] = useState({});
 
-    const addToCart = async (itemId) => {
-        const cartData = {...cartItems}
+  // Add item to the cart
+  const addToCart = (itemId) => {
+    setCartItems((prevCartItems) => ({
+      ...prevCartItems,
+      [itemId]: (prevCartItems[itemId] || 0) + 1,
+    }));
+  };
 
-        if(cartData[itemId]) {
-            cartData[itemId] += 1; 
-        } else {
-            cartData[itemId] = 1
-        }
-        setCartItems(cartData)
+  // Update the cart quantity
+  const updateCartQuantity = (itemId, newQuantity) => {
+    if (newQuantity < 0) return; // Prevent negative quantities
+    setCartItems((prevCartItems) => {
+      const updatedCart = { ...prevCartItems };
+      if (newQuantity === 0) {
+        delete updatedCart[itemId]; // Remove item if quantity is 0
+      } else {
+        updatedCart[itemId] = newQuantity;
+      }
+      return updatedCart;
+    });
+  };
+
+  // Get total number of items in the cart
+  const getCartCount = () => {
+    return Object.values(cartItems).reduce((total, qty) => total + qty, 0);
+  };
+
+  // Get total cart amount
+  const getCartAmount = () => {
+    let totalAmount = 0;
+    for (const itemId in cartItems) {
+      const item = books.find((book) => book._id === itemId);
+      if (item) {
+        totalAmount += cartItems[itemId] * item.price;
+      }
     }
+    return totalAmount;
+  };
 
-    useEffect(() => {
-        console.log(cartItems);
-    }, [cartItems])
+  // Log cart items for debugging
+  useEffect(() => {
+    console.log("Cart Items:", cartItems);
+  }, [cartItems]);
 
-    const getCartCount = () => {
-        let totalCount = 0;
-        for (const item in cartItems){
-            try {
-                if(cartItems[item] > 0) {
-                    totalCount += cartItems[item]
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        return totalCount
-    }
+  // Context values to share with components
+  const contextValue = {
+    books,
+    currency,
+    delivery_charges,
+    navigate,
+    token,
+    setToken,
+    cartItems,
+    setCartItems,
+    addToCart,
+    getCartCount,
+    getCartAmount,
+    updateCartQuantity,
+  };
 
-    const contextValue = {books, currency, navigate, token, setToken, cartItems, setCartItems, addToCart, getCartCount}
-
-    return (
-        <ShopContext.Provider value={contextValue}>
-            {props.children}
-        </ShopContext.Provider>
-    )
-}
+  return (
+    <ShopContext.Provider value={contextValue}>
+      {props.children}
+    </ShopContext.Provider>
+  );
+};
 
 export default ShopContextProvider;
