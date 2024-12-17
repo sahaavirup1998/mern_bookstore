@@ -105,13 +105,6 @@ const handleAdminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Validate input
-    if (!email || !password) {
-      return res
-        .status(400)
-        .json({ success: false, message: "All fields are required" });
-    }
-
     if (
       email === process.env.ADMIN_EMAIL &&
       password === process.env.ADMIN_PASS
