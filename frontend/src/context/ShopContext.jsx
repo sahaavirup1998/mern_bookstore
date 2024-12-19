@@ -15,25 +15,41 @@ const ShopContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
 
   // Add item to the cart
-  const addToCart = (itemId) => {
-    setCartItems((prevCartItems) => ({
-      ...prevCartItems,
-      [itemId]: (prevCartItems[itemId] || 0) + 1,
-    }));
+  const addToCart = async (itemId) => {
+    const cartData ={...cartItems}
+
+    if(cartData[itemId]) {
+      cartData[itemId] += 1;
+    } else {
+      cartData[itemId] = 1;
+    }
+    setCartItems(cartData);
+
+    if(token){
+      try {
+        await axios.post(backend_url + '/api/cart/addCart', {itemId} , {headers: {token}});
+        toast.success("Item added to cart!");
+      } catch (error) {
+        console.error("Error adding item to cart: ", error);
+        toast.error("Failed to add item to cart!");
+      }
+    }
   };
 
   // Update the cart quantity
-  const updateCartQuantity = (itemId, newQuantity) => {
-    if (newQuantity < 0) return; // Prevent negative quantities
-    setCartItems((prevCartItems) => {
-      const updatedCart = { ...prevCartItems };
-      if (newQuantity === 0) {
-        delete updatedCart[itemId]; // Remove item if quantity is 0
-      } else {
-        updatedCart[itemId] = newQuantity;
+  const updateCartQuantity = async (itemId, quantity) => {
+    const cartData ={...cartItems};
+    cartData[itemId] = quantity;
+    setCartItems(cartData);
+    if(token){
+      try {
+        await axios.post(backend_url + '/api/cart/updateCart', {itemId, quantity}, {headers: {token}});
+        toast.success("Cart updated!");
+      } catch (error) {
+        console.error("Error updating cart: ", error);
+        toast.error("Failed to update cart!");
       }
-      return updatedCart;
-    });
+    }
   };
 
   // Get total number of items in the cart
@@ -52,6 +68,21 @@ const ShopContextProvider = (props) => {
     }
     return totalAmount;
   };
+
+  // get userCart data
+  const getUserCart = async(token) => {
+    try {
+      const response = await axios.post(backend_url + '/api/cart/getCart', {}, {headers: {token}});
+      if (response.data.success) {
+        setCartItems(response.data.cartData);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching user cart: ", error);
+      toast.error("Failed to fetch user cart!");
+    }
+  }
 
   // Log cart items for debugging
   useEffect(() => {
@@ -76,6 +107,7 @@ const ShopContextProvider = (props) => {
   useEffect(() => {
     if(!token && localStorage.getItem('token')){
       setToken(localStorage.getItem('token'));
+      getUserCart(localStorage.getItem('token'));
     }
     getProductsData();
   }, [])
