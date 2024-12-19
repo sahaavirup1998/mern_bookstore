@@ -55,34 +55,36 @@ const List = ({ token }) => {
   }, []);
 
   return (
-    <div className="w-full px-2 sm:px-8 mt-4 sm:mt-14">
+    <div className="w-full px-2 sm:px-8 mt-4 sm:mt-14 mb-4 sm:mb-14">
       <div className="flex flex-col gap-2">
-        <div className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr] md:grid-cols-[1fr_3.5fr_1.5fr_1fr_1fr] items-center py-1 px-2 bg-white bold-14 sm:bold-15 mb-1 rounded">
-          <h5 className="">Image</h5>
+        <div className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr] md:grid-cols-[1fr_2fr_1.5fr_1fr_1fr_1fr] items-center py-1 px-2 bg-white bold-14 sm:bold-15 mb-1 rounded">
+          <h5 className="text-center">Image</h5>
           <h5 className="text-center">Name</h5>
-          <h5 className="">Category</h5>
-          <h5 className="">Price</h5>
-          <h5 className="">Remove</h5>
+          <h5 className="text-center">Description</h5>
+          <h5 className="text-center">Category</h5>
+          <h5 className="text-center">Price</h5>
+          <h5 className="text-center">Remove</h5>
         </div>
         {list.map((item) => (
           <div
             key={item._id}
-            className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr] md:grid-cols-[1fr_3.5fr_1.5fr_1fr_1fr] items-center gap-2 p-1 bg-white rounded-xl"
+            className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr] md:grid-cols-[1fr_2fr_1.5fr_1fr_1fr_1fr] items-center gap-2 p-1 bg-white rounded-xl"
           >
             <img
               src={item.image.startsWith("http") ? item.image : backend_url + item.image} // Ensure full URL
               alt={item.name}
-              className="w-16 rounded-lg"
+              className="w-16 rounded-lg m-auto"
             />
             <h5 className="text-center text-sm font-bold">{item.name}</h5>
-            <p className="font-semibold">{item.category}</p>
-            <div className="text-sm font-semibold">
+            <p className="text-center text-sm font-medium">{item.description}</p>
+            <p className=" text-center font-semibold">{item.category}</p>
+            <div className="text-center text-sm font-semibold">
               {currency}
               {item.price}
             </div>
-            <div className="text-right md:text-center cursor-pointer text-2xl">
+            <div className="text-center cursor-pointer text-2xl">
               <TbTrash
-                className="text-red-500"
+                className="text-red-500 m-auto"
                 onClick={() => removeProduct(item._id)}
               />
             </div>
