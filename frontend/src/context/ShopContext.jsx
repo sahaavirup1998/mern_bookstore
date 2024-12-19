@@ -1,13 +1,16 @@
 import React, { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { books } from "../assets/data";
+import axios from "axios"
+import { toast } from "react-toastify"
 
 export const ShopContext = createContext();
 
 const ShopContextProvider = (props) => {
   const currency = "$";
   const delivery_charges = 15;
+  const backend_url = import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate();
+  const [books, setBooks] = useState([]);
   const [token, setToken] = useState("");
   const [cartItems, setCartItems] = useState({});
 
@@ -55,6 +58,28 @@ const ShopContextProvider = (props) => {
     console.log("Cart Items:", cartItems);
   }, [cartItems]);
 
+  // getting all products
+  const getProductsData = async () => {
+    try {
+      const response = await axios.get(backend_url + '/api/product/productslist');
+      if(response.data.success) {
+        setBooks(response.data.products);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching products: ", error);
+      toast.error("Failed to fetch products!");
+    }
+  }
+
+  useEffect(() => {
+    if(!token && localStorage.getItem('token')){
+      setToken(localStorage.getItem('token'));
+    }
+    getProductsData();
+  }, [])
+
   // Context values to share with components
   const contextValue = {
     books,
@@ -69,6 +94,7 @@ const ShopContextProvider = (props) => {
     getCartCount,
     getCartAmount,
     updateCartQuantity,
+    backend_url
   };
 
   return (

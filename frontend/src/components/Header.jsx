@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { CgMenuLeft } from "react-icons/cg";
 import { TbUserCircle } from "react-icons/tb";
@@ -10,10 +10,23 @@ import { ShopContext } from "../context/ShopContext";
 const Header = () => {
   const [menuOpened, setMenuOpened] = useState(false);
   const [active, setActive] = useState(false);
-  const { navigate, token, setToken, getCartCount } = useContext(ShopContext);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const { navigate, token, getCartCount, setCartItems, setToken } = useContext(ShopContext);
 
   const toggleMenu = () => {
     setMenuOpened((prev) => !prev);
+  };
+
+  const toggleDropdown = () => {
+    setDropdownVisible((prev) => !prev);
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken("");
+    setCartItems({});
+    setDropdownVisible(false); 
+    navigate("/login"); 
   };
 
   useEffect(() => {
@@ -75,29 +88,34 @@ const Header = () => {
               {getCartCount()}
             </span>
           </Link>
-          <div className="relative group">
-            <div className="">
-              {token ? (
-                <div>
-                  <TbUserCircle className="text-[29px] cursor-pointer" />
-                </div>
-              ) : (
-                <button onClick={() => navigate("/login")} className="btn-outline flexCenter gap-x-2">
-                  Login <RiUserLine />
-                </button>
-              )}
-            </div>
-            {token && (
-              <>
-                <ul className="bg-white p-1 w-32 ring-1 ring-slate-900/5 rounded absolute right-0 top-9 hidden group-hover:flex flex-col regular-14 shadow-md">
-                  <li className="p-2 text-tertiary rounded-md hover:bg-primary cursor-pointer">
-                    Orders
-                  </li>
-                  <li className="p-2 text-tertiary rounded-md hover:bg-primary cursor-pointer">
-                    Logout
-                  </li>
-                </ul>
-              </>
+          <div className="relative">
+            {token ? (
+              <div onClick={toggleDropdown} className="cursor-pointer">
+                <TbUserCircle className="text-[29px]" />
+              </div>
+            ) : (
+              <button
+                onClick={() => navigate("/login")}
+                className="btn-outline flexCenter gap-x-2"
+              >
+                Login <RiUserLine />
+              </button>
+            )}
+            {token && dropdownVisible && (
+              <ul className="bg-white p-1 w-32 ring-1 ring-slate-900/5 rounded absolute right-0 top-9 flex flex-col regular-14 shadow-md">
+                <li
+                  className="p-2 text-tertiary rounded-md hover:bg-primary cursor-pointer"
+                  onClick={() => navigate("/orders")}
+                >
+                  Orders
+                </li>
+                <li
+                  className="p-2 text-tertiary rounded-md hover:bg-primary cursor-pointer"
+                  onClick={logout}
+                >
+                  Logout
+                </li>
+              </ul>
             )}
           </div>
         </div>
