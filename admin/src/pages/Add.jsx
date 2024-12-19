@@ -68,7 +68,7 @@ const Add = ({ token }) => {
   };
 
   return (
-    <div className="px-2 sm:px-8 sm:mt-14 pb-16">
+    <div className="px-2 sm:px-8 mt-4 sm:mt-14 pb-16">
       <form
         onSubmit={onSubmitHandler}
         className="flex flex-col gap-y-3 medium-14 lg:w-[777px]"

@@ -15,20 +15,20 @@ const Sidebar = () => {
           <span className="text-secondary pl-2 sm:hidden lg:flex">Becala</span>
         </Link>
         <div className="flex sm:flex-col gap-x-5 gap-y-8 sm:pt-10">
-          <NavLink to={'/'} className={({isActive}) => isActive ? "active-link" : "flexStart gap-x-2 sm;pl-12 p-5 medium-15 cursor-pointer h-10 rounded-xl"}>
+          <NavLink to={'/'} className={({isActive}) => isActive ? "active-link" : "flexStart gap-x-2 sm:pl-12 p-5 medium-15 cursor-pointer h-10 rounded-xl"}>
             <FaSquarePlus className="" />
             <div className="hidden lg:flex">Add Items</div>
           </NavLink>
-          <NavLink to={'/list'} className={({isActive}) => isActive ? "active-link" : "flexStart gap-x-2 sm;pl-12 p-5 medium-15 cursor-pointer h-10 rounded-xl"}>
+          <NavLink to={'/list'} className={({isActive}) => isActive ? "active-link" : "flexStart gap-x-2 sm:pl-12 p-5 medium-15 cursor-pointer h-10 rounded-xl"}>
             <FaListAlt className="" />
             <div className="hidden lg:flex">List</div>
           </NavLink>
-          <NavLink to={'/orders'} className={({isActive}) => isActive ? "active-link" : "flexStart gap-x-2 sm;pl-12 p-5 medium-15 cursor-pointer h-10 rounded-xl"}>
+          <NavLink to={'/orders'} className={({isActive}) => isActive ? "active-link" : "flexStart gap-x-2 sm:pl-12 p-5 medium-15 cursor-pointer h-10 rounded-xl"}>
             <MdFactCheck className="" />
             <div className="hidden lg:flex">Orders</div>
           </NavLink>
           <div className="">
-            <button className="flexStart gap-x-2 sm;pl-12 p-5 medium-15 cursor-pointer h-10 rounded-xl">
+            <button className="flexStart gap-x-2 sm:pl-12 p-5 medium-15 cursor-pointer h-10 rounded-xl">
               <BiLogOut className="text-lg" />
               <div className="hidden lg:flex">Logout</div>
             </button>
