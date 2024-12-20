@@ -6,8 +6,8 @@ import { getAllOrders, getUserOrders, handleCashOnDeliveryOrder, handleStripeOrd
 const orderRouter = express.Router();
 
 // for admin
-orderRouter.post('/list', adminAuth, getAllOrders);
-orderRouter.post('/status', adminAuth, updateStatus);
+orderRouter.post('/list', getAllOrders);
+orderRouter.post('/status', updateStatus);
 
 // for payment
 orderRouter.post('/place', authUser, handleCashOnDeliveryOrder);

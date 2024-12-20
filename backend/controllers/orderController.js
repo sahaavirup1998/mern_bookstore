@@ -54,9 +54,11 @@ const verifyStripe = async (req, res) => {
 
 const getAllOrders = async (req, res) => {
     try {
-        
+        const orders = await orderModel.find({})
+        res.status(200).json({ success: true, orders });
     } catch (error) {
-        
+        console.error(error);
+        res.status(500).json({ success: false, message: error.message });
     }
 }
 
