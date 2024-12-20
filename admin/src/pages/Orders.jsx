@@ -29,6 +29,21 @@ const Orders = ({ token }) => {
     }
   };
 
+  const statusHandeler = async (event, orderId) => {
+    try {
+      const response = await axios.post(backend_url + '/api/order/status', {orderId, status: event.target.value}, {headers: {token}});
+      if (response.data.success) {
+        await fetchAllOrders();
+        toast.success("Order status updated successfully!");
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to update order status", error.message);
+    }
+  }
+
   useEffect(() => {
     fetchAllOrders();
   }, [token]);
@@ -81,40 +96,46 @@ const Orders = ({ token }) => {
             </div>
             <div className="">
               <p className="">
-                Total:
+                Total:{" "}
                 <span className="text-tertiary medium-14">
                   {order.items.length}
                 </span>
               </p>
               <p className="">
-                Method:
+                Method:{" "}
                 <span className="text-tertiary medium-14">
                   {order.paymentMethod}
                 </span>
               </p>
               <p className="">
-                Payment:
+                Payment:{" "}
                 <span className="text-tertiary medium-14">
                   {order.payment ? "Done" : "Pending"}
                 </span>
               </p>
               <p className="">
-                Date:
+                Date:{" "}
                 <span className="text-tertiary medium-14">
                   {new Date(order.date).toLocaleDateString()}
                 </span>
               </p>
             </div>
             <p className="">
-              Price:
+              Price:{" "}
               <span className="text-tertiary medium-14">
                 {currency}
                 {order.amount}
               </span>
             </p>
-            <p className="p-1  max-w-36 bg-primary text-sm font-semibold">Status: 
-              <span className="text-secondary text-base">{order.status}</span>
-            </p>
+            <select onChange={(event) => statusHandeler(event, order._id)} value={order.status} className="p-1 ring-1 ring-slate-900/5 rounded max-w-36 bg-primary text-sm font-semibold">
+              <option className="text-base" value="Order Placed">Order Placed</option>
+              <option className="text-base" value="Packing">Packing</option>
+              <option className="text-base" value="Shipped">Shipped</option>
+              <option className="text-base" value="Out for Delivery">Out for Delivery</option>
+              <option className="text-base" value="Cancelled">Cancelled</option>
+              <option className="text-base" value="Returned">Returned</option>
+              <option className="text-base" value="Delivered">Delivered</option>
+            </select>
           </div>
         ))}
       </div>

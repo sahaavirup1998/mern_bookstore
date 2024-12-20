@@ -44,7 +44,7 @@ const Orders = () => {
 
   return (
     <section className="max-padd-container pb-4">
-      <div className="pt-28">
+      <div className="pt-28 pb-8">
         <Title title1={"Order"} title2={"List"} titleStyles={"h3"} />
         {orderData.map((item, i) => (
           <div className="bg-white p-2 mt-3 rounded-lg" key={i}>
